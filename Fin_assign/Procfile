@@ -1,0 +1,1 @@
+web : gunicorn fin_assign.wsgi --log-file -

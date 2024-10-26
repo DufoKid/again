@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }}{% else %}Add Room{% endif %}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>{% if title %}{{ title }}{% else %}Update Room{% endif %}</h1>
+
+        <form action="{% url 'add_room' %}" method="POST">
+            {% csrf_token %}
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <label for="roomID">Room ID</label>
+            <input type="text" name="roomID" id="roomID" required {% if room %}value="{{ room.roomID }}"{% endif %}>
+
+            <label for="roomBlock">Room Block</label>
+            <input type="text" name="roomBlock" id="roomBlock" value="{% if room %}{{ room.roomBlock }}{% endif %}" required>
+
+            <label for="roomCapacity">Room Capacity</label>
+            <input type="number" name="roomCapacity" id="roomCapacity" value="{% if room %}{{ room.roomCapacity }}{% endif %}" required>
+
+            <button type="submit">{% if room %}Update Room{% else %}Add Room{% endif %}</button>
+        </form>
+
+        <a href="{% url 'room_lecturer' %}" class="back-link">Back to Room List</a>
+    </div>
+</body>
+</html>

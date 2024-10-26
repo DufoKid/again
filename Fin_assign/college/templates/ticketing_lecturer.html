@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket List for Lecturers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #6dd5ed, #2193b0); /* Updated background gradient */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 250px; /* Adjust width as needed */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s;
+        }
+
+        .search-container input:focus {
+            border-color: #3498db; /* Change border color on focus */
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .back-link:hover {
+            background-color: #c0392b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7f7f7; /* Lighter background for even rows */
+        }
+
+        tr:hover {
+            background-color: #e1e1e1; /* Highlight on hover */
+        }
+
+        .action-buttons-ticket button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .update-btn {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .update-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            .search-container input {
+                width: 200px; /* Adjust width for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6em;
+            }
+
+            th,
+            td {
+                padding: 8px;
+                font-size: 0.8em;
+            }
+
+            .back-link {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ticket List for Lecturers</h1>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <form action="{% url 'ticket_list_lecturer' %}" method="get">
+            <input type="text" name="q" placeholder="Search tickets..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- Back Link to Home or Previous Page -->
+    <a href="{% url 'lecturer_detail' %}" class="back-link">Back to Home</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Student Name</th>
+                <th>Staff Lecturer Name</th>
+                <th>Room</th>
+                <th>Meeting Type</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th>Actions</th> <!-- Added for update/delete -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.studentID.studentName }}</td>
+                <td>{{ ticket.slID.slName }}</td>
+                <td>{{ ticket.roomID.roomBlock }} - {{ ticket.roomID.roomID }}</td>
+                <td>{{ ticket.meetingType.typeName }}</td>
+                <td>{{ ticket.date }}</td>
+                <td>{{ ticket.time }}</td>
+                <td>{{ ticket.status }}</td>
+                <td>{{ ticket.comment }}</td>
+                <td class="action-buttons-ticket">
+                    <form action="{% url 'update_ticket' ticket.id %}" method="get" style="display: inline;">
+                        <button type="submit" class="update-btn">Update</button>
+                    </form>
+                    <form action="{% url 'delete_ticket' ticket.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" style="text-align: center; color: #999;">No tickets available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>

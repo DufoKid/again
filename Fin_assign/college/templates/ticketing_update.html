@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Ticket</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3498db;
+            outline: none; /* Remove default outline */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            width: 100%; /* Full width for better UX */
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            button {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+
+            .back-link {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Ticket</h1>
+
+        <a href="{% url 'ticket_list_student' %}" class="back-link">Back to Ticket List</a>
+
+        <form method="POST" action="{% url 'update_ticket' ticket.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="studentID">Student Name:</label>
+                <select name="studentID" id="studentID" required>
+                    <option value="">Select a Student</option>
+                    {% for student in students %}
+                        <option value="{{ student.studentID }}" {% if student.studentID == ticket.studentID.studentID %}selected{% endif %}>{{ student.studentName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="slID">Staff Lecturer Name:</label>
+                <select name="slID" id="slID" required>
+                    <option value="">Select a Staff Lecturer</option>
+                    {% for lecturer in lecturers %}
+                        <option value="{{ lecturer.slID }}" {% if lecturer.slID == ticket.slID.slID %}selected{% endif %}>{{ lecturer.slName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="roomID">Room:</label>
+                <select name="roomID" id="roomID" required>
+                    <option value="">Select a Room</option>
+                    {% for room in rooms %}
+                        <option value="{{ room.roomID }}" {% if room.roomID == ticket.roomID.roomID %}selected{% endif %}>{{ room.roomBlock }} - {{ room.roomID }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="meetingType">Meeting Type:</label>
+                <select name="meetingType" id="meetingType" required>
+                    <option value="">Select a Meeting Type</option>
+                    {% for meeting in meeting_types %}
+                        <option value="{{ meeting.typeID }}" {% if meeting.typeID == ticket.meetingType.typeID %}selected{% endif %}>{{ meeting.typeName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" name="date" id="date" value="{{ ticket.date }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Time:</label>
+                <input type="time" name="time" id="time" value="{{ ticket.time }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
+                    <option value="Pending" {% if ticket.status == "Pending" %}selected{% endif %}>Pending</option>
+                    <option value="Approved" {% if ticket.status == "Approved" %}selected{% endif %}>Approved</option>
+                    <option value="Rejected" {% if ticket.status == "Rejected" %}selected{% endif %}>Rejected</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea name="comment" id="comment" rows="4">{{ ticket.comment }}</textarea>
+            </div>
+
+            <button type="submit">Update Ticket</button>
+        </form>
+    </div>
+</body>
+
+</html>

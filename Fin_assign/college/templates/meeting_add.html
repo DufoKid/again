@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Meeting Type</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Center vertically */
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center items horizontally */
+        }
+
+        label {
+            margin-top: 10px;
+            align-self: flex-start; /* Align label to the left */
+        }
+
+        input, textarea {
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border: 1px solid #3498db;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            button {
+                padding: 8px 12px;
+            }
+
+            .back-link {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Meeting Type</h1>
+
+        <!-- Add Meeting Type Form -->
+        <form action="{% url 'add_meeting_type' %}" method="POST">
+            {% csrf_token %}
+            <label for="typeID">ID</label>
+            <input type="text" name="typeID" id="typeID" required>
+
+            <label for="typeName">Name</label>
+            <input type="text" name="typeName" id="typeName" required>
+
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="4" required></textarea>
+
+            <button type="submit">Add Meeting Type</button>
+        </form>
+
+        <!-- Back to Meeting Types List Link -->
+        <a href="{% url 'meeting_lecturer' %}" class="back-link">Back to Meeting Types List</a>
+    </div>
+</body>
+</html>

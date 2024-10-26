@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Types List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+        }
+
+        h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 12px 25px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2980b9, #8e44ad);
+        }
+
+        th {
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 15px;
+            font-size: 1.2em;
+        }
+
+        tbody tr {
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #ecf0f1;
+            transform: scale(1.02);
+        }
+
+        td {
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td[colspan="3"] {
+            color: #999;
+            font-style: italic;
+            font-size: 1em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th, td {
+                font-size: 1em;
+                padding: 15px;
+            }
+
+            .back-link {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            th, td {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .back-link {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Meeting Types List</h1>
+
+    <!-- Back Link to Home or Previous Page -->
+    <a href="{% url 'student_detail' %}" class="back-link">Back to Home</a>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Type ID</th>
+                    <th>Type Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for meeting in meeting_types %}
+                <tr>
+                    <td>{{ meeting.typeID }}</td>
+                    <td>{{ meeting.typeName }}</td>
+                    <td>{{ meeting.description }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No meeting types available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
